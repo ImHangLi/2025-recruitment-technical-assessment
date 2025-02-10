@@ -28,9 +28,13 @@ public class BuildingLoader {
         
         // Handle the result
         switch result {
-        case .success:
-            // TODO
-            fatalError("Handle successful response")
+        case .success(let (data, status)):
+            do {
+                let _ = try JSONDecoder().decode([RemoteBuilding].self, from: data)
+                fatalError("TODO")
+            } catch {
+                return .failure(Error.invalidData)
+            }
         case .failure:
             return .failure(Error.connectivity)
         }
