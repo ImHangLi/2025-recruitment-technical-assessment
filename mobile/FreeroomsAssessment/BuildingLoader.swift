@@ -28,7 +28,12 @@ public class BuildingLoader {
         
         // Handle the result
         switch result {
-        case .success(let (data, status)):
+        case .success(let (data, httpRes)):
+            // Check for valid HTTP status code
+            guard httpRes.statusCode == 200 else {
+                return .failure(Error.connectivity)
+            }
+            
             do {
                 let _ = try JSONDecoder().decode([RemoteBuilding].self, from: data)
                 fatalError("TODO")
